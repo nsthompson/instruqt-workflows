@@ -1,0 +1,125 @@
+name: instruqt-deploy-dev
+on:
+  workflow_call:
+    secrets:
+      INSTRUQT_API_KEY:
+        required: true
+      INSTRUQT_ORG_SLUG:
+        required: true
+      INSTRUQT_TOKEN:
+        required: true
+      GITHUB_TOKEN:
+        required: true
+
+permissions: write-all
+
+jobs:
+  instruqt-deploy-dev:
+    if: |
+      github.event.pull_request.merged ||
+      github.event.inputs.run-manually == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Install Instruqt
+        id: install
+        run: |-
+          wget https://github.com/instruqt/cli/releases/download/2043-2d207cd/instruqt-linux-2043-2d207cd.zip -O /tmp/instruqt.zip
+          unzip /tmp/instruqt.zip -d /usr/local/bin
+          instruqt update
+
+      - name: Convert to dev track
+        uses: nsthompson/instruqt-converter-action@v1.2
+        env:
+          CONVERT_TO: 'dev'
+          INSTRUQT_API_KEY: ${{ secrets.INSTRUQT_API_KEY }}
+          INSTRUQT_ORG_SLUG: ${{ secrets.INSTRUQT_ORG_SLUG }}
+
+      - name: Validate Track
+        id: validate
+        env:
+          INSTRUQT_TOKEN: ${{ secrets.INSTRUQT_TOKEN }}
+        run: |-
+          instruqt track validate
+
+      - name: Push Track
+        id: push
+        env:
+          INSTRUQT_TOKEN: ${{ secrets.INSTRUQT_TOKEN }}
+        run: |-
+          instruqt track push --force
+
+      - name: Test Track
+        id: test
+        env:
+          INSTRUQT_TOKEN: ${{ secrets.INSTRUQT_TOKEN }}
+        run: |-
+          instruqt track test --skip-fail-check 2>&1 | tee test.out
+        continue-on-error: true
+
+      - name: Capture Test Output to Variable
+        if: steps.test.outcome == 'failure'
+        uses: actions/github-script@v6
+        id: test-output
+        with:
+          script: |
+            const fs = require('fs');
+            return fs.readFileSync('test.out','utf8').toString();
+          result-encoding: string
+
+      - name: Update Pull Request
+        if: ${{ github.event.pull_request.merged }}
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Instruqt Install 🚀\`${{ steps.install.outcome }}\`
+            #### Instruqt Validate ⚙️\`${{ steps.validate.outcome }}\`
+            #### Instruqt Test ✔️\`${{ steps.test.outcome }}\`
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+
+      - name: Create Issue
+        if: steps.test.outcome == 'failure'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            var contributors = []
+            const github_users = await github.rest.repos.listContributors({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+
+            for(user in github_users['data']) {
+              contributors.push(github_users['data'][user]['login'])
+            }
+
+            const output = `#### Instruqt Test Status 🔧\`${{ steps.test.outcome }}\`
+
+            ##### Test Output
+            \`\`\`shell
+            ${{ steps.test-output.outputs.result }}
+            \`\`\`
+
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ["test-failure"],
+              assignees: contributors,
+              title: "Instruqt Test Failure - Dev",
+              body: output
+            })
+
+      - name: Test Track Status
+        if: steps.test.outcome == 'failure'
+        run: exit 1
