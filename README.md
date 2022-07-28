@@ -1,6 +1,6 @@
-# wwt-instruqt-workflows
+# instruqt-workflows
 
-This repo contains shared Github Action Workflows for labs being hosted on the Instruqt platform.
+This repo contains shared Github Action Workflows for tracks hosted on the Instruqt platform.
 
 ## Calling a reusable workflow
 
