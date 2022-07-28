@@ -4,9 +4,9 @@ This repo contains shared Github Action Workflows for tracks hosted on the Instr
 
 ## Calling a reusable workflow
 
-### .github/workflows/instruqt-deploy-dev.yml
+### :sparkles: .github/workflows/instruqt-deploy-dev.yml
 
-#### Secret Requirements
+:key: Secret Requirements
 
 * INSTRUQT_API_KEY
 
@@ -14,7 +14,7 @@ This repo contains shared Github Action Workflows for tracks hosted on the Instr
 
 * INSTRUQT_TOKEN
 
-#### Job Configuration Example
+:jigsaw: Job Configuration Example
 
 ```yaml
 jobs:
@@ -29,9 +29,9 @@ jobs:
       INSTRUQT_TOKEN: ${{ secrets.INSTRUQT_TOKEN }}
 ```
 
-### .github/workflows/instruqt-deploy-prod.yml
+### :sparkles: .github/workflows/instruqt-deploy-prod.yml
 
-#### Secret Requirements
+:key: Secret Requirements
 
 * INSTRUQT_API_KEY
 
@@ -39,7 +39,7 @@ jobs:
 
 * INSTRUQT_TOKEN
 
-#### Job Configuration Example
+:jigsaw: Job Configuration Example
 
 ```yaml
 jobs:
@@ -54,9 +54,9 @@ jobs:
       INSTRUQT_TOKEN: ${{ secrets.INSTRUQT_TOKEN }}
 ```
 
-### .github/workflows/instruqt-nightly-test.yml
+### :sparkles: .github/workflows/instruqt-nightly-test.yml
 
-#### Secret Requirements
+:key: Secret Requirements
 
 * INSTRUQT_API_KEY
 
@@ -64,7 +64,7 @@ jobs:
 
 * INSTRUQT_TOKEN
 
-#### Job Configuration Example
+:jigsaw: Job Configuration Example
 
 ```yaml
 jobs:
