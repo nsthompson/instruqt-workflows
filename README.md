@@ -2,11 +2,13 @@
 
 This repo contains shared Github Action Workflows for tracks hosted on the Instruqt platform.
 
-## Calling a reusable workflow
+## Workflow Requirements and Usage
 
-### :sparkles: .github/workflows/instruqt-deploy-dev.yml
+---
 
-:key: Secret Requirements
+### .github/workflows/instruqt-deploy-dev.yml
+
+:key: **Secret Requirements**
 
 * INSTRUQT_API_KEY
 
@@ -14,7 +16,7 @@ This repo contains shared Github Action Workflows for tracks hosted on the Instr
 
 * INSTRUQT_TOKEN
 
-:jigsaw: Job Configuration Example
+:jigsaw: **Usage Example**
 
 ```yaml
 jobs:
@@ -29,9 +31,11 @@ jobs:
       INSTRUQT_TOKEN: ${{ secrets.INSTRUQT_TOKEN }}
 ```
 
-### :sparkles: .github/workflows/instruqt-deploy-prod.yml
+---
 
-:key: Secret Requirements
+### .github/workflows/instruqt-deploy-prod.yml
+
+:key: **Secret Requirements**
 
 * INSTRUQT_API_KEY
 
@@ -39,7 +43,7 @@ jobs:
 
 * INSTRUQT_TOKEN
 
-:jigsaw: Job Configuration Example
+:jigsaw: **Usage Example**
 
 ```yaml
 jobs:
@@ -54,9 +58,11 @@ jobs:
       INSTRUQT_TOKEN: ${{ secrets.INSTRUQT_TOKEN }}
 ```
 
-### :sparkles: .github/workflows/instruqt-nightly-test.yml
+---
 
-:key: Secret Requirements
+### .github/workflows/instruqt-nightly-test.yml
+
+:key: **Secret Requirements**
 
 * INSTRUQT_API_KEY
 
@@ -64,7 +70,7 @@ jobs:
 
 * INSTRUQT_TOKEN
 
-:jigsaw: Job Configuration Example
+:jigsaw: **Usage Example**
 
 ```yaml
 jobs:
@@ -75,6 +81,8 @@ jobs:
       INSTRUQT_ORG_SLUG: ${{ secrets.INSTRUQT_ORG_SLUG }}
       INSTRUQT_TOKEN: ${{ secrets.INSTRUQT_TOKEN }}
 ```
+
+---
 
 ## Contributors
 
