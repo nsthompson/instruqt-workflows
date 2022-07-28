@@ -4,8 +4,6 @@ This repo contains shared Github Action Workflows for tracks hosted on the Instr
 
 ## Workflow Requirements and Usage
 
----
-
 ### .github/workflows/instruqt-deploy-dev.yml
 
 :key: **Secret Requirements**
