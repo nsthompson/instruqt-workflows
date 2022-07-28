@@ -8,4 +8,4 @@ TBD
 
 ## Contributors
 
-- Nick Thompson <nick.thompson@wwt.com>
+* Nick Thompson ([@nsthompson](https://github.com/nsthompson))
