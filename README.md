@@ -4,7 +4,77 @@ This repo contains shared Github Action Workflows for tracks hosted on the Instr
 
 ## Calling a reusable workflow
 
-TBD
+### .github/workflows/instruqt-deploy-dev.yml
+
+#### Secret Requirements
+
+* INSTRUQT_API_KEY
+
+* INSTRUQT_ORG_SLUG
+
+* INSTRUQT_TOKEN
+
+#### Job Configuration Example
+
+```yaml
+jobs:
+  instruqt-deploy-dev:
+    if: |
+      github.event.pull_request.merged ||
+      github.event.inputs.run-manually == 'true'
+    uses: nsthompson/instruqt-workflows/.github/workflows/instruqt-deploy-dev.yml@main
+    secrets:
+      INSTRUQT_API_KEY: ${{ secrets.INSTRUQT_API_KEY }}
+      INSTRUQT_ORG_SLUG: ${{ secrets.INSTRUQT_ORG_SLUG }}
+      INSTRUQT_TOKEN: ${{ secrets.INSTRUQT_TOKEN }}
+```
+
+### .github/workflows/instruqt-deploy-prod.yml
+
+#### Secret Requirements
+
+* INSTRUQT_API_KEY
+
+* INSTRUQT_ORG_SLUG
+
+* INSTRUQT_TOKEN
+
+#### Job Configuration Example
+
+```yaml
+jobs:
+  instruqt-deploy-prod:
+    if: |
+      github.event.pull_request.merged ||
+      github.event.inputs.run-manually == 'true'
+    uses: nsthompson/instruqt-workflows/.github/workflows/instruqt-deploy-prod.yml@main
+    secrets:
+      INSTRUQT_API_KEY: ${{ secrets.INSTRUQT_API_KEY }}
+      INSTRUQT_ORG_SLUG: ${{ secrets.INSTRUQT_ORG_SLUG }}
+      INSTRUQT_TOKEN: ${{ secrets.INSTRUQT_TOKEN }}
+```
+
+### .github/workflows/instruqt-nightly-test.yml
+
+#### Secret Requirements
+
+* INSTRUQT_API_KEY
+
+* INSTRUQT_ORG_SLUG
+
+* INSTRUQT_TOKEN
+
+#### Job Configuration Example
+
+```yaml
+jobs:
+  instruqt-nightly-test:
+    uses: nsthompson/instruqt-workflows/.github/workflows/instruqt-nightly-test.yml@main
+    secrets:
+      INSTRUQT_API_KEY: ${{ secrets.INSTRUQT_API_KEY }}
+      INSTRUQT_ORG_SLUG: ${{ secrets.INSTRUQT_ORG_SLUG }}
+      INSTRUQT_TOKEN: ${{ secrets.INSTRUQT_TOKEN }}
+```
 
 ## Contributors
 
